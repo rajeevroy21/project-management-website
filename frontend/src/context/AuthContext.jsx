@@ -13,14 +13,14 @@ export const AuthProvider = ({ children }) => {
       try {
         // Check if user is authenticated
         const authResponse = await axios.get(
-          'http://localhost:5000/api/faculties/auth-check',
+          'https://project-management-website-dovj.onrender.com/api/faculties/auth-check',
           { withCredentials: true }
         );
         
         if (authResponse.data.isAuthenticated) {
           // Get user info from backend
           const userResponse = await axios.get(
-            'http://localhost:5000/api/faculties/user',
+            'https://project-management-website-dovj.onrender.com/api/faculties/user',
             { withCredentials: true }
           );
           

@@ -59,7 +59,7 @@ export default function StudentSignup() {
 
     try {
       const regNos = validStudents.map(student => student.regNo);
-      const checkResponse = await axios.post('http://localhost:5000/api/students/check-students', { regNos });
+      const checkResponse = await axios.post('https://project-management-website-dovj.onrender.com/api/students/check-students', { regNos });
 
       if (checkResponse.data.existingRegNos?.length > 0) {
         setError(`Registration numbers already exist: ${checkResponse.data.existingRegNos.join(', ')}`);
@@ -67,7 +67,7 @@ export default function StudentSignup() {
         return;
       }
 
-      const batchResponse = await axios.post('http://localhost:5000/api/batches', {
+      const batchResponse = await axios.post('https://project-management-website-dovj.onrender.com/api/batches', {
         title: formData.batchTitle,
         password: formData.password
       });
@@ -75,7 +75,7 @@ export default function StudentSignup() {
       const batchId = batchResponse.data._id;
 
       for (const student of validStudents) {
-        await axios.post('http://localhost:5000/api/students', {
+        await axios.post('https://project-management-website-dovj.onrender.com/api/students', {
           registrationNumber: student.regNo,
           section: student.section,
           batchTitle: formData.batchTitle,

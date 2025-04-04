@@ -39,11 +39,11 @@ function App() {
       setIsLoading(true);
       try {
         // Fetch students data
-        const studentsResponse = await fetch('http://localhost:5000/api/students');
+        const studentsResponse = await fetch('https://project-management-website-dovj.onrender.com/api/students');
         const studentsData = await studentsResponse.json();
   
         // Fetch uploaded data
-        const uploadsResponse = await fetch('http://localhost:5000/api/uploads/getfiles');
+        const uploadsResponse = await fetch('https://project-management-website-dovj.onrender.com/api/uploads/getfiles');
         const uploadsData = await uploadsResponse.json();
   
         const combinedData = studentsData
@@ -96,11 +96,11 @@ setFinalizedProjects(combinedData);
       setIsLoading(true);
       try {
         // Fetch students data
-        const studentsResponse = await fetch('http://localhost:5000/api/students');
+        const studentsResponse = await fetch('https://project-management-website-dovj.onrender.com/api/students');
         const studentsData = await studentsResponse.json();
   
         // Fetch uploaded data
-        const uploadsResponse = await fetch('http://localhost:5000/api/uploads/getfiles');
+        const uploadsResponse = await fetch('https://project-management-website-dovj.onrender.com/api/uploads/getfiles');
         const uploadsData = await uploadsResponse.json();
   
         // Extract unique batch numbers from students data
@@ -113,7 +113,7 @@ setFinalizedProjects(combinedData);
         for (let batchNo of batchNumbers) {
           try {
             // Fetch guide for the batch number
-            const guideResponse = await fetch(`http://localhost:5000/api/final/faculty/batch/${batchNo}`);
+            const guideResponse = await fetch(`https://project-management-website-dovj.onrender.com/api/final/faculty/batch/${batchNo}`);
             
             if (guideResponse.ok) {
               const guideJson = await guideResponse.json();
@@ -129,7 +129,7 @@ setFinalizedProjects(combinedData);
         }
         const fetchProjectTitle = async (batchNumber) => {
           try {
-            const response = await axios.get(`http://localhost:5000/api/update/getTitle/${batchNumber}`);
+            const response = await axios.get(`https://project-management-website-dovj.onrender.com/api/update/getTitle/${batchNumber}`);
             if (response.status === 200) {
               return response.data.title;
             } else {
@@ -230,7 +230,7 @@ setFinalizedProjects(combinedData);
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/students");
+        const response = await axios.get("https://project-management-website-dovj.onrender.com/api/students");
         const data = response.data;
 
         const groupedBatches = {};
@@ -301,7 +301,7 @@ setFinalizedProjects(combinedData);
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get('http://localhost:5000/api/uploads/getfiles');
+        const response = await axios.get('https://project-management-website-dovj.onrender.com/api/uploads/getfiles');
         const formattedData = response.data.map(row => ({
           name: row['Name'] || '',
           Regdno: row['Regdno'] || '',
@@ -338,7 +338,7 @@ setFinalizedProjects(combinedData);
         const domain = batch.title;
         if (domain && domain !== "Unknown") {  
           try {
-            const response = await axios.get(`http://localhost:5000/api/domain-faculty/faculty/${domain}`);
+            const response = await axios.get(`https://project-management-website-dovj.onrender.com/api/domain-faculty/faculty/${domain}`);
   
             if (response.data && response.data.facultyNames) {
               updatedGuides[domain] = response.data.facultyNames;

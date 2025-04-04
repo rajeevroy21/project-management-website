@@ -49,14 +49,14 @@ const StudentCard = () => {
         setLoading(true);
 
         // Fetch user data first
-        fetch("http://localhost:5000/api/faculties/user", { credentials: "include" })
+        fetch("https://project-management-website-dovj.onrender.com/api/faculties/user", { credentials: "include" })
             .then((res) => res.json())
             .then((userData) => {
                 if (userData?.userId && userData?.authenticated && userData?.role === "student") {
                     setUserId(userData.userId);
 
                     // Now fetch batch data
-                    return fetch("http://localhost:5000/api/alloc/getBatches");
+                    return fetch("https://project-management-website-dovj.onrender.com/api/alloc/getBatches");
                 } else {
                     throw new Error("User not authenticated or invalid role");
                 }
@@ -76,7 +76,7 @@ const StudentCard = () => {
 
     useEffect(() => {
         if (selectedBatch) {
-            fetch(`http://localhost:5000/api/final/faculty/batch/${selectedBatch}`)
+            fetch(`https://project-management-website-dovj.onrender.com/api/final/faculty/batch/${selectedBatch}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.allocatedGuide) {
@@ -85,7 +85,7 @@ const StudentCard = () => {
                 })
                 .catch(error => console.error("Error fetching guide:", error));
 
-            fetch(`http://localhost:5000/api/review/reviews/${selectedBatch}`)
+            fetch(`https://project-management-website-dovj.onrender.com/api/review/reviews/${selectedBatch}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.reviews) {
@@ -109,7 +109,7 @@ const StudentCard = () => {
 
     useEffect(() => {
         if (selectedBatch) {
-            fetch(`http://localhost:5000/api/update/getTitle/${selectedBatch}`)
+            fetch(`https://project-management-website-dovj.onrender.com/api/update/getTitle/${selectedBatch}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.title) {
@@ -208,7 +208,7 @@ const StudentCard = () => {
             name: batchTitle,
         };
 
-        fetch(`http://localhost:5000/api/update/getTitle/${selectedBatch}`, {
+        fetch(`https://project-management-website-dovj.onrender.com/api/update/getTitle/${selectedBatch}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -220,7 +220,7 @@ const StudentCard = () => {
                     setMessage("Title updated successfully!");
                     setBatchTitle("");
 
-                    fetch(`http://localhost:5000/api/update/getTitle/${selectedBatch}`)
+                    fetch(`https://project-management-website-dovj.onrender.com/api/update/getTitle/${selectedBatch}`)
                         .then((res) => res.json())
                         .then((data) => {
                             if (data.title) {
@@ -229,7 +229,7 @@ const StudentCard = () => {
                         })
                         .catch((error) => console.error("Error fetching updated title:", error));
 
-                    fetch("http://localhost:5000/api/alloc/getBatches")
+                    fetch("https://project-management-website-dovj.onrender.com/api/alloc/getBatches")
                         .then((res) => res.json())
                         .then((data) => {
                             setBatches(data.batches);

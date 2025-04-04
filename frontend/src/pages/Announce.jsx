@@ -23,12 +23,12 @@ const Announcements = () => {
     const checkAuthAndRole = async () => {
       try {
         // First check if user is authenticated
-        const authResponse = await axios.get('http://localhost:5000/api/faculties/auth-check', { withCredentials: true });
+        const authResponse = await axios.get('https://project-management-website-dovj.onrender.com/api/faculties/auth-check', { withCredentials: true });
         setIsAuthenticated(authResponse.data.isAuthenticated);
         
         if (authResponse.data.isAuthenticated) {
           // If authenticated, fetch role
-          const roleResponse = await axios.get('http://localhost:5000/api/faculties/user-role', { withCredentials: true });
+          const roleResponse = await axios.get('https://project-management-website-dovj.onrender.com/api/faculties/user-role', { withCredentials: true });
           setUserRole(roleResponse.data.role);
         }
       } catch (error) {

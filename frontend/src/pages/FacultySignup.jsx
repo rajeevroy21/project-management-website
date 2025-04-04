@@ -34,7 +34,7 @@ export default function FacultySignup() {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/faculties', {
+      await axios.post('https://project-management-website-dovj.onrender.com/api/faculties', {
         facultyId: formData.facultyId,
         password: formData.password,
         role: formData.role

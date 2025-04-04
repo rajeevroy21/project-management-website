@@ -29,7 +29,7 @@ const Header = () => {
     const checkAuthStatus = async () => {
       try {
         const authResponse = await axios.get(
-          'http://localhost:5000/api/faculties/auth-check',
+          'https://project-management-website-dovj.onrender.com/api/faculties/auth-check',
           { withCredentials: true }
         );
         
@@ -39,7 +39,7 @@ const Header = () => {
         if (authResponse.data.isAuthenticated) {
           try {
             const roleResponse = await axios.get(
-              'http://localhost:5000/api/faculties/user-role',
+              'https://project-management-website-dovj.onrender.com/api/faculties/user-role',
               { withCredentials: true }
             );
             setUserRole(roleResponse.data.role);
@@ -60,7 +60,7 @@ const Header = () => {
     try {
       // Call logout endpoint to destroy session on server
       await axios.post(
-        'http://localhost:5000/api/faculties/logout',
+        'https://project-management-website-dovj.onrender.com/api/faculties/logout',
         {},
         { withCredentials: true }
       );

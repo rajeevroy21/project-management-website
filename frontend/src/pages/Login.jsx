@@ -23,7 +23,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/students/login',
+        'https://project-management-website-dovj.onrender.com/api/students/login',
         {
           registrationNumber: formData.id,
           password: formData.password,
@@ -70,7 +70,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/faculties/login',
+        'https://project-management-website-dovj.onrender.com/api/faculties/login',
         {
           facultyId: formData.id,
           password: formData.password,

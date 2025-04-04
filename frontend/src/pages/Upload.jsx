@@ -16,7 +16,7 @@ export default function Upload() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/uploads/files');
+        const response = await axios.get('https://project-management-website-dovj.onrender.com/api/uploads/files');
         setUploadedFiles(response.data);
       } catch (err) {
         console.error('Error fetching files:', err);
@@ -56,7 +56,7 @@ export default function Upload() {
     formData.append('file', file);
 
     try {
-      await axios.post('http://localhost:5000/api/uploads', formData, {
+      await axios.post('https://project-management-website-dovj.onrender.com/api/uploads', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -73,14 +73,14 @@ export default function Upload() {
   const handleDownload = (fileName) => {
     // Trigger download of the file
     const link = document.createElement('a');
-    link.href = `http://localhost:5000/api/uploads/files/${fileName}`; // Updated to match the download route
+    link.href = `https://project-management-website-dovj.onrender.com/api/uploads/files/${fileName}`; // Updated to match the download route
     link.download = fileName;
     link.click();
   };
 
   const handleDelete = async (fileName) => {
     try {
-      await axios.delete(`http://localhost:5000/api/uploads/files/${fileName}`);
+      await axios.delete(`https://project-management-website-dovj.onrender.com/api/uploads/files/${fileName}`);
       setUploadedFiles(uploadedFiles.filter((file) => file !== fileName)); // Remove the deleted file from state
       setSuccess('File deleted successfully!');
     } catch (err) {

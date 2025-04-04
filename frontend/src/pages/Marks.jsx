@@ -19,7 +19,7 @@ const ReviewTable = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/review/reviews');
+                const response = await axios.get('https://project-management-website-dovj.onrender.com/api/review/reviews');
                 setReviews(response.data.reviews || []); // Ensure it's always an array
                 setIsLoading(false);
             } catch (err) {

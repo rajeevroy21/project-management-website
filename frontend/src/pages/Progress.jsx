@@ -13,13 +13,13 @@ function Progress() {
 
   useEffect(() => {
     // Check authentication status first
-    axios.get('http://localhost:5000/api/faculties/auth-check', { withCredentials: true })
+    axios.get('https://project-management-website-dovj.onrender.com/api/faculties/auth-check', { withCredentials: true })
       .then(response => {
         setIsAuthenticated(response.data.isAuthenticated);
         
         // If authenticated, fetch user role
         if (response.data.isAuthenticated) {
-          axios.get('http://localhost:5000/api/faculties/user-role', { withCredentials: true })
+          axios.get('https://project-management-website-dovj.onrender.com/api/faculties/user-role', { withCredentials: true })
             .then(roleResponse => {
               setUserRole(roleResponse.data.role);
             })
@@ -28,7 +28,7 @@ function Progress() {
             });
           
           // Fetch batches data
-          axios.get("http://localhost:5000/api/alloc/getBatches", { withCredentials: true })
+          axios.get("https://project-management-website-dovj.onrender.com/api/alloc/getBatches", { withCredentials: true })
             .then((batchResponse) => {
               setBatches(batchResponse.data.batches);
               setFilteredBatches(batchResponse.data.batches);

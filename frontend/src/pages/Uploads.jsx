@@ -46,7 +46,7 @@ function Documents() {
 
     // Handle file deletion
     const handleDelete = (fileName) => {
-        fetch(`http://localhost:5000/api/domain-faculty/files/${fileName}`, {
+        fetch(`https://project-management-website-dovj.onrender.com/api/domain-faculty/files/${fileName}`, {
             method: "DELETE",
         })
             .then((response) => response.json())
@@ -78,7 +78,7 @@ function Documents() {
                             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-3"
                         />
                         <button
-                            onClick={() => handleFileUpload(selectedFile, "http://localhost:5000/api/domain-faculty/upload", setMessage)}
+                            onClick={() => handleFileUpload(selectedFile, "https://project-management-website-dovj.onrender.com/api/domain-faculty/upload", setMessage)}
                             className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
                         >
                             <Upload className="w-4 h-4" />
@@ -99,7 +99,7 @@ function Documents() {
                             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 mb-3"
                         />
                         <button
-                            onClick={() => handleFileUpload(guideFile, "http://localhost:5000/api/final/uploadGuideInfo", setGuideMessage)}
+                            onClick={() => handleFileUpload(guideFile, "https://project-management-website-dovj.onrender.com/api/final/uploadGuideInfo", setGuideMessage)}
                             className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200"
                         >
                             <Upload className="w-4 h-4" />
@@ -122,7 +122,7 @@ function Documents() {
         onClick={() =>
             handleFileUpload(
                 adminFile,
-                "http://localhost:5000/api/section/uploadSecAlloc",
+                "https://project-management-website-dovj.onrender.com/api/section/uploadSecAlloc",
                 setAdminMessage
             )
         }
@@ -146,7 +146,7 @@ function Documents() {
                             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 mb-3"
                         />
                         <button
-                            onClick={() => handleFileUpload(studentFile, "http://localhost:5000/api/alloc/uploadStudentInfo", setStudentMessage)}
+                            onClick={() => handleFileUpload(studentFile, "https://project-management-website-dovj.onrender.com/api/alloc/uploadStudentInfo", setStudentMessage)}
                             className="inline-flex items-center gap-2 bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition duration-200"
                         >
                             <Upload className="w-4 h-4" />

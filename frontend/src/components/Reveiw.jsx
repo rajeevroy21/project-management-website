@@ -4,7 +4,7 @@ const BatchTable = () => {
     const [batches, setBatches] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/alloc/getBatches")
+        fetch("https://project-management-website-dovj.onrender.com/api/alloc/getBatches")
             .then((res) => res.json())
             .then((data) => setBatches(data.batches))
             .catch((error) => console.error("Error fetching batches:", error));
