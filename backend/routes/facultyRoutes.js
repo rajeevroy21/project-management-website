@@ -17,12 +17,12 @@ router.use(session({
         ttl: 60 * 60, // 1 hour
         crypto: { secret: process.env.CRYPTO_SECRET || 'encryptionsecretkey' }
     }),
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        httpOnly: true, 
-        sameSite: 'lax', // More relaxed for debugging
-        maxAge: 60 * 60 * 1000 // 1 hour
-    },
+   cookie: {
+  secure: true, // must be true for production with HTTPS
+  httpOnly: true,
+  sameSite: 'none', // allow cross-site cookie sharing
+  maxAge: 60 * 60 * 1000
+},
     name: 'projectPortal.sid'
 }));
 
