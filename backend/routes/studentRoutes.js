@@ -2,13 +2,53 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const Student = require('../models/Student');
 const jwt = require('jsonwebtoken');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const router = express.Router();
-// Get student details with batch information
+
+// Session middleware with MongoDB store
+router.use(session({
+    secret: process.env.SESSION_SECRET || 'supersecretkey',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ 
+        mongoUrl: process.env.MONGO_URI,
+        ttl: 60 * 60, // 1 hour
+        crypto: { secret: process.env.CRYPTO_SECRET || 'encryptionsecretkey' }
+    }),
+    cookie: {
+        secure: true, // must be true for production with HTTPS
+        httpOnly: true,
+        sameSite: 'none', // allow cross-site cookie sharing
+        maxAge: 60 * 60 * 1000
+      },
+    name: 'projectPortal.sid'
+}));
+
+// Middleware to check authentication
+const isAuthenticated = (req, res, next) => {
+    if (!req.session || !req.session.authenticated) {
+        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
+    }
+
+    try {
+        // If you still want to use JWT for additional security
+        if (req.session.token) {
+            req.user = jwt.verify(req.session.token, process.env.JWT_SECRET);
+        }
+        next();
+    } catch (error) {
+        // If token validation fails, destroy the session
+        req.session.destroy((err) => {
+            return res.status(403).json({ message: 'Invalid session. Please log in again.' });
+        });
+    }
+};
 router.get('/details/:registrationNumber', async(req, res) => {
     try {
         const { registrationNumber } = req.params;
         const student = await Student.findOne({
-            registrationNumber: { $regex: new RegExp(`^${registrationNumber.trim()}$`, 'i') }
+            registrationNumber: { $regex: new RegExp(`${registrationNumber.trim()}$`, 'i') }
         }).populate('batchId');
 
         if (!student) {
@@ -29,7 +69,7 @@ router.get('/:registrationNumber', async(req, res) => {
     try {
         const { registrationNumber } = req.params;
         const student = await Student.findOne({
-            registrationNumber: { $regex: new RegExp(`^${registrationNumber.trim()}$`, 'i') }
+            registrationNumber: { $regex: new RegExp(`${registrationNumber.trim()}`, 'i') }
         }).populate('batchId');
 
         if (!student) {
@@ -181,7 +221,6 @@ router.delete('/:id', async(req, res) => {
     }
 });
 
-// Student login
 router.post('/login', async(req, res) => {
     const { registrationNumber, password } = req.body;
 
@@ -200,26 +239,80 @@ router.post('/login', async(req, res) => {
             return res.status(400).json({ error: 'Invalid password' });
         }
 
-        const token = jwt.sign({
-                studentId: student._id,
-                registrationNumber: student.registrationNumber
-            },
-            process.env.JWT_SECRET || 'your_jwt_secret_key', { expiresIn: '1h' }
+        // Generate JWT token (optional, for additional verification)
+        const payload = { 
+            studentId: student._id, 
+            registrationNumber: student.registrationNumber,
+            userType: 'student'  // Use userType instead of role
+        };
+        
+        const token = jwt.sign(
+            payload,
+            process.env.JWT_SECRET || 'your_jwt_secret_key', 
+            { expiresIn: '1h' }
         );
 
-        res.status(200).json({
-            message: 'Login successful',
-            token,
-            student: {
-                id: student._id,
+        // Store minimal data in session
+        req.session.authenticated = true;
+        req.session.userType = 'student';  // Indicates this is a student session
+        req.session.studentId = student._id;
+        req.session.registrationNumber = student.registrationNumber;
+        req.session.token = token;
+
+        // Save session and return response
+        req.session.save((err) => {
+            if (err) {
+                return res.status(500).json({ error: 'Session creation failed' });
+            }
+            
+            res.status(200).json({ 
+                message: 'Login successful',
                 registrationNumber: student.registrationNumber,
                 batchTitle: student.batchTitle
-            }
+            });
         });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Server error during login' });
     }
 });
+
+// Get user info (Protected Route)
+router.get('/user', isAuthenticated, (req, res) => {
+    if (!req.session) {
+        return res.status(401).json({ message: 'No active session' });
+    }
+    
+    // Return only necessary user data from session
+    res.json({ 
+        userType: req.session.userType,
+        authenticated: req.session.authenticated,
+        studentId: req.session.studentId,
+        registrationNumber: req.session.registrationNumber
+    });
+});
+
+// Check authentication status
+router.get('/auth-check', (req, res) => {
+    if (req.session && req.session.authenticated) {
+        return res.json({ isAuthenticated: true });
+    }
+    res.json({ isAuthenticated: false });
+});
+
+// Logout route (Destroy session)
+router.post('/logout', (req, res) => {
+    if (!req.session) {
+        return res.status(200).json({ message: 'Already logged out' });
+    }
+    
+    req.session.destroy((err) => {
+        if (err) return res.status(500).json({ message: 'Logout failed' });
+        res.clearCookie('projectPortal.sid');
+        res.status(200).json({ message: 'Logout successful' });
+    });
+});
+
+
 
 module.exports = router;
