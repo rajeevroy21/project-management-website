@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 const cookieParser = require('cookie-parser');
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:5173',  // Your frontend URL
+    origin: 'https://project-management-website-sage.vercel.app',  // Your frontend URL
     credentials: true                 // Allow cookies
 }));
 app.use(express.json());
